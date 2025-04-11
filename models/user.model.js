@@ -14,11 +14,15 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    validate: {
-      validator: function (v) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-      },
-      message: (props) => `${props.value} is not a valid email!`,
-    },
-  }
-});
+    match : [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Please enter a valid email address"],
+  },
+  password: {
+    type: String,
+    required: [true, "User Password is required"],
+    minlength: [6, "User Password must be at least 6 characters long"],
+  },
+}, { timestamps: true });
+
+const User = mongoose.model("User", userSchema);
+
+export default User;
